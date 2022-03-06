@@ -3,8 +3,9 @@
 //
 
 #include <stdio.h>
-#include <malloc.h>
 
+#define MIN_YEAR 1599
+#define MAX_YEAR 10000
 
 enum month_t {
     JAN = 1, FEB, MAR, APR, MAI, JUN, JUL, AUG, SEP, OKT, NOV, DEZ
@@ -14,7 +15,7 @@ int gibIntWert(char type, int min, int max);
 
 int istSchaltjahr(int jahr);
 
-int tageProMonat();
+int tageProMonat(int jahr, int month);
 
 int validYearRange(int jahr);
 
@@ -42,40 +43,38 @@ int maina2_1(int argc, char *argv[]) {
 
 
 int gibIntWert(char type, int min, int max) {
-    char *input = (char *) malloc(sizeof(char) * 10);
-    int value;
-    printf("%s: ", type);
-    fgets(input, 10, stdin);
-    value = atoi(input);
-    if (value < min || value > max) {
-        printf("%s muss zwischen %d und %d liegen.\n", type, min, max);
-        return gibIntWert(type, min, max);
+    int retVal = 0;
+    switch (type) {
+        case 'M':
+            retVal = 3;
+            break;
+        case 'J':
+            retVal = 2022;
+            break;
     }
-    return value;
+    return retVal;
+
 }
 
 int istSchaltjahr(int jahr) {
     int isSchaltjahr = 0;
-    // leap jahr if perfectly divisible by 400
     if (jahr % 400 == 0) {
+        // leap jahr if perfectly divisible by 400
         isSchaltjahr = 1;
-    }
+    } else if (jahr % 100 == 0) {
         // not a leap year if divisible by 100
         // but not divisible by 400
-    else if (jahr % 100 == 0) {
         int isSchaltjahr = 0;
-    }
+    } else if (jahr % 4 == 0) {
         // leap year if not divisible by 100
         // but divisible by 4
-    else if (jahr % 4 == 0) {
         isSchaltjahr = 1;
-    }
+    } else {
         // all other years are not leap years
-    else {
         int isSchaltjahr = 0;
     }
 
-    return 0;
+    return isSchaltjahr;
 }
 
 int tageProMonat(int jahr, int monat) {
@@ -105,7 +104,7 @@ int tageProMonat(int jahr, int monat) {
 }
 
 int validYearRange(int jahr) {
-    return 1599 <= jahr || jahr < 10000 ? 1 : 0;
+    return MIN_YEAR <= jahr || jahr < MAX_YEAR ? 1 : 0;
 }
 
 int validMonthRange(int month) {
