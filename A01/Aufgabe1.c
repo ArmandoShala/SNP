@@ -3,44 +3,32 @@
 //
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
 
-#define NUM_ROWS 8
+#define NUM_ROWS 10
 
-int a3(double conversionRate);
-
-int a4();
-
-int maina2(void) {
-    printf("Hello Word");
-
-    double conversionRate = 1;
-    (void) scanf("%lf", &conversionRate);
-
-    a3(conversionRate);
-    a3(43158.47); // for debugging purposes
-
-    a4();
-
-    return 0;
+void helloWorld(void) {
+    printf("Hello World");
 }
 
+void bitCoinCalc(void) {
+    printf("Bitte Umrechnungsfaktor eingeben\n");
+    double factor = 43158.47;
+//    (void) scanf("%lf", &factor);
 
-int a3(double conversionRate) {
-    double chf = 200;
+    int amount = 200;
     for (int i = 0; i < NUM_ROWS; ++i) {
-        printf("%5.0lf CHF\t<--->\t%5.5f BTC\n", chf, chf / conversionRate);
-        chf += 200;
+        printf("%4.0d CHF\t<-->\t%4.5lf\n", amount, amount / factor);
+        amount += 200;
     }
-    return EXIT_SUCCESS;
 }
 
-int a4() {
+void countWords(void) {
+//    fgets(singleChar, sizeof(singleChar), stdin);
     int charCount = 0;
     int wordCount = 1;
     char prevChar = ' ';
     char singleChar = ' ';
+    printf("Enter a short singleChar to count words:\n");
     while (singleChar != '\n') {
         singleChar = getchar();
         charCount += 1;
@@ -54,5 +42,4 @@ int a4() {
 
     printf("Char count is: %d\nWord count is: %d", --charCount, wordCount);
 
-    return EXIT_SUCCESS;
 }
