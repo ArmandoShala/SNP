@@ -21,7 +21,7 @@ typedef struct {
 
 int gibIntWert(char type, int min, int max);
 
-int istSchaltjahr(int jahr);
+int is_leap_year(date_t date);
 
 int tageProMonat(int jahr, int month);
 
@@ -62,7 +62,7 @@ int maina2_1(int argc, char *argv[]) {
     printf("Monat: %d, Jahr: %d \n", datum.month, datum.year);
 
     //  Ausgabe zum Test (hier mit dem ternaeren Operator "?:")
-    printf("%d ist %s Schaltjahr\n", datum.year, istSchaltjahr(datum.year) ? "ein" : "kein");
+    printf("%d ist %s Schaltjahr\n", datum.year, is_leap_year(datum) ? "ein" : "kein");
 
     // Ausgabe
     printf("Der Monat %02d-%d hat %d Tage.\n", datum.month, datum.year, tageProMonat(datum.year, datum.month));
@@ -83,16 +83,16 @@ int gibIntWert(char type, int min, int max) {
     return userInput;
 }
 
-int istSchaltjahr(int jahr) {
+int is_leap_year(date_t date) {
     int isSchaltjahr = 0;
-    if (jahr % 400 == 0) {
+    if (date.year % 400 == 0) {
         // leap jahr if perfectly divisible by 400
         isSchaltjahr = 1;
-    } else if (jahr % 100 == 0) {
+    } else if (date.year % 100 == 0) {
         // not a leap year if divisible by 100
         // but not divisible by 400
         int isSchaltjahr = 0;
-    } else if (jahr % 4 == 0) {
+    } else if (date.year % 4 == 0) {
         // leap year if not divisible by 100
         // but divisible by 4
         isSchaltjahr = 1;
@@ -104,9 +104,15 @@ int istSchaltjahr(int jahr) {
     return isSchaltjahr;
 }
 
-int tageProMonat(int jahr, int monat) {
+int get_month_length(date_t date) {
     int tageProMt = 30;
-    switch (monat) {
+    switch (date.month) {
+        case APR:
+        case JUN:
+        case SEP:
+        case NOV:
+            tageProMt = 30;
+            break;
         case JAN:
         case MAR:
         case MAI:
@@ -117,13 +123,10 @@ int tageProMonat(int jahr, int monat) {
             tageProMt = 31;
             break;
         case FEB:
-            tageProMt = 28 + (istSchaltjahr(jahr) ? 1 : 0);
+            tageProMt = 28 + (is_leap_year(date) ? 1 : 0);
             break;
-        case APR:
-        case JUN:
-        case SEP:
-        case NOV:
         default:
+            tageProMt = 0;
             break;
     }
 
