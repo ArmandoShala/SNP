@@ -3,13 +3,14 @@
 //
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #define MIN_YEAR 1599
 #define MAX_YEAR 10000
 
-enum month_t {
+typedef enum {
     JAN = 1, FEB, MAR, APR, MAI, JUN, JUL, AUG, SEP, OKT, NOV, DEZ
-};
+} month_t;
 
 int gibIntWert(char type, int min, int max);
 
@@ -17,17 +18,39 @@ int istSchaltjahr(int jahr);
 
 int tageProMonat(int jahr, int month);
 
-int validYearRange(int jahr);
+int checkRangeOfInput(int month, int min, int max);
 
-int validMonthRange(int month);
+int checkStartdateOfGregorianCalendar(int day, int month, int year);
 
 int maina2_1(int argc, char *argv[]) {
 
-    int monat, jahr;
+    int tag, monat, jahr;
 
     //  Monat einlesen und Bereich ueberpruefen
-    monat = gibIntWert("Monat", 1, 12);
-    jahr = gibIntWert("Jahr", 1600, 9999);
+//    jahr = gibIntWert('J', 1600, 9999);
+//    monat = gibIntWert('M', 1, 12);
+//    tag = gibIntWert('D', 1, tageProMonat(jahr, monat));
+
+    printf("Bite Datum angegeben (YYYY-MM-DD)\n");
+    int amountUserArguments = scanf("%i-%i-%i", &jahr, &monat, &tag);
+
+    if (amountUserArguments != 3) {
+        printf("Datum im falschen Vormat angegeben!\n");
+        return EXIT_FAILURE;
+    }
+
+    if (!(checkRangeOfInput(jahr, MIN_YEAR, MAX_YEAR)
+          && checkRangeOfInput(monat, 1, 12)
+          && checkRangeOfInput(tag, 1, tageProMonat(jahr, monat)))) {
+        printf("Datum ist nicht valid!\n");
+        return EXIT_FAILURE;
+    }
+
+
+//    if (monat == -1 || jahr == -1) {
+//        printf("Fehlerhafte Daten erhalten. Terminiere");
+//        return EXIT_FAILURE;
+//    }
 
     //  Ausgabe zum Test
     printf("Monat: %d, Jahr: %d \n", monat, jahr);
@@ -38,22 +61,20 @@ int maina2_1(int argc, char *argv[]) {
     // Ausgabe
     printf("Der Monat %02d-%d hat %d Tage.\n", monat, jahr, tageProMonat(jahr, monat));
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 
 int gibIntWert(char type, int min, int max) {
-    int retVal = 0;
-    switch (type) {
-        case 'M':
-            retVal = 3;
-            break;
-        case 'J':
-            retVal = 2022;
-            break;
+    int userInput = 0;
+    printf("Bitte %c angeben\n", type);
+    scanf("%i", &userInput);
+    if (checkRangeOfInput(userInput, min, max) == 0) {
+        userInput = -1;
+        printf("%c muss zwischen %i und %i liegen\n", type, min, max);
     }
-    return retVal;
 
+    return userInput;
 }
 
 int istSchaltjahr(int jahr) {
@@ -103,10 +124,10 @@ int tageProMonat(int jahr, int monat) {
     return tageProMt;
 }
 
-int validYearRange(int jahr) {
-    return MIN_YEAR <= jahr || jahr < MAX_YEAR ? 1 : 0;
+int checkRangeOfInput(int input, int min, int max) {
+    return min <= input && input <= max;
 }
 
-int validMonthRange(int month) {
-    return 1 <= month || month < 13 ? 1 : 0;
+int checkStartdateOfGregorianCalendar(int day, int month, int year) {
+    return year == 1582 && month <= SEP && day <= 14;
 }
