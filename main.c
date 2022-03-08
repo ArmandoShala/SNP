@@ -4,7 +4,8 @@
 
 #include "A01/Aufgabe11.h"
 #include "A02/Aufgabe21.h"
+#include "A02/Aufgabe2_32.h"
 
 int main(void) {
-    maina2_1();
+    main2_31();
 }

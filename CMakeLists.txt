@@ -30,4 +30,4 @@ file(GLOB HEADER_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/A02/*.hpp
         )
 
-add_executable(SNP ${SOURCE_FILES} ${HEADER_FILES} main.c)
+add_executable(SNP ${SOURCE_FILES} ${HEADER_FILES} main.c A02/Aufgabe2_32.c A02/Aufgabe2_32.h)
