@@ -51,14 +51,14 @@ int is_leap_year(date_t date) {
     } else if (date.year % 100 == 0) {
         // not a leap year if divisible by 100
         // but not divisible by 400
-        int isSchaltjahr = 0;
+        isSchaltjahr = 0;
     } else if (date.year % 4 == 0) {
         // leap year if not divisible by 100
         // but divisible by 4
         isSchaltjahr = 1;
     } else {
         // all other years are not leap years
-        int isSchaltjahr = 0;
+        isSchaltjahr = 0;
     }
 
     return isSchaltjahr;
